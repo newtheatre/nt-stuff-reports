@@ -1,0 +1,20 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ company.name }}{% endblock %}
+
+{% block content %}
+<h1 class="text-center">
+	{{ company.name }}
+</h1>
+<ul>
+	<div class="row">
+	{% for show in company.company_shows %}
+	<div class="col-md-6">
+		<div class="card mb-2">
+			{% include 'stuff/include/show_header.html' with company_page=1 card=1  %}
+			{% include 'stuff/include/show_form_list.html' %}
+		</div>
+	</div>
+	{% endfor %}
+	</div>
+</ul>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'stuff/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="row">
+	{% for show in show %}
+	<div class="col-md-6">
+		<div class="card mb-2">
+			{% include 'stuff/include/show_header.html' with card=1 %}
+			<div class="card-body p-0">
+				{% include 'stuff/include/show_form_list.html' %}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

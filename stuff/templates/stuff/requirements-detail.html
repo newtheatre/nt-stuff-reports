@@ -1,0 +1,74 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ requirement }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">{{ requirement }}</h1>
+	</div>
+	<div class="col-2 float-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffRequirementsEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+</div>
+{% include 'stuff/include/show_header.html' with show=show datetime_only=1 %}
+<hr>
+<div class="row">
+	<div class="col-md-6">
+		<h2>Theatre</h2>
+		<table class="table">
+			<tr>
+				<td><strong>Using Workshop:</strong> {{ requirement.using_workshop }}</td>
+				<td><strong>Using Storage:</strong> {{ requirement.using_storage }}<br /><em>{{ requirement.storage_notes }}</em></td>
+			</tr>
+			<tr>
+				<td><strong>Using Props:</strong> {{ requirement.using_props }}<br /><em>{{ requirement.prop_notes }}</em></td>
+				<td><strong>Rigging:</strong> {{ requirement.rigging }}</td>
+			</tr>
+			<tr>
+				<td><strong>Fire Alarm Disabled:</strong> {{ requirement.fire_alarm_disabled }}</td>
+				<td><strong>Effects:</strong> {{ requirement.effects }}</td>
+			</tr>
+			<tr>
+				<td colspan="2"><strong>Notes:</strong> {% if not requirement.theatre_notes %}<em>None</em> {% else %}{{ requirement.theatre_notes }}{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<h2>Set / Staging</h2>
+		<table class="table">
+			<tr>
+				<td><strong>Seating Layout:</strong></td>
+				<td>{{ requirement.get_seating_layout_display }}</td>
+			</tr>
+			<tr>
+				<td><strong>Set Details:</strong></td>
+				<td>{{ requirement.set_details }}</td>
+			</tr>
+			<tr>
+				<td colspan="2"><strong>Notes:</strong> {% if not requirement.set_notes %}<em>None</em>{% else %}{{ requirement.set_notes }}{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<hr class="py-1">
+<div class="row">
+	<div class="col"><h2>Technical</h2>
+		<table class="table">
+			<tr>
+				<td><strong>Lighting:</strong> {{ requirement.lighting }}</td>
+			</tr>
+			<tr>
+				<td><strong>Sound:</strong> {{ requirement.sound }}</td>
+			</tr>
+			<tr>
+				<td><strong>Video:</strong> {{ requirement.video }}</td>
+			</tr>
+			<tr>
+				<td><strong>Notes:</strong> {% if not requirement.tech_notes %}<em>None</em>{% else %}{{ requirement.tech_notes }}{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

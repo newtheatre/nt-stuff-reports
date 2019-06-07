@@ -1,0 +1,11 @@
+venv/
+
+*.pyc
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+*.db

@@ -1,0 +1,93 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ induction }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">{{ induction }}</h1>
+	</div>
+	<div class="col-2 float-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffInductionEdit' induction.show_name.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+</div>
+<hr>
+{% include 'stuff/include/show_header.html' with show=induction.show_name datetime_only=1 %}
+<hr>
+<div class="row">
+	<div class="col-md-6">
+		<h2>Show Info</h2>
+		<p>Primary contact: {{ induction.show_member }}</p>{% if induction.show_role %}<p><em>{{ induction.show_role }}</em></p>{% endif %}
+		<p>Their phone number: {{ induction.show_phone }}</p>
+	</div>
+	<div class="col-md-6">
+		<h2>Audience Info</h2>
+		<p>Latecomers: {{ induction.get_latecomers_display }}</p>
+		<p>Comps: {{ induction.comps }}
+			{% if induction.comp_list %}<br />{{ induction.comp_list }}{% endif %}
+		</p>
+		<p>Minimum Audience: {{ induction.minimum_audience }}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6">
+		<h2>Show Stop Triggers</h2>
+		{% if induction.show_stop.all %}
+			<ul>
+				{% for trigger in induction.show_stop.all %}
+				<li>{{ trigger }}</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p><em>No show stop triggers.</em></p>
+		{% endif %}
+		{% if induction.show_stop_notes %}<p>{{ induction.show_stop_notes }}</p>{% endif %}
+	</div>
+	<div class="col-md-6">
+		<h2>Show Ending</h2>
+		<p>{{ induction.show_end }}</p>
+	</div>
+</div>
+{% if induction.show_name.ticketing_id %}
+<div class="row">
+	<div class="col">
+		<a class="btn btn-block btn-success" target="_blank" href="https://ticketing.newtheatre.org.uk/show/{{ induction.show_name.ticketing_id }}/0"><span class="h4"><i class="fa fa-fw fa-ticket-alt"></i> Sell tickets for this show</span></a>
+	</div>
+</div>
+{% endif %}
+<hr>
+<p class="text-muted text-center">Last updated by {{ induction.author }} on {{ induction.timestamp }}</p>
+<hr>
+<div class="row mb-2">
+	<div class="col">
+		<a class="btn btn-outline-info btn-block btn-lg" role="button" 
+		href="{% if induction.show_name.has_requirements %}{% url 'stuff:stuffRequirements' induction.show_name.pk %}{% else %}{% url 'stuff:stuffRequirementsNew' induction.show_name.pk %}{% endif %}">
+		{% if not induction.show_name.has_requirements %}
+			Add Requirements
+		{% else %}
+			View Changeover Notes
+		{% endif %}
+		</a>
+	</div>
+	<div class="col">
+		<a class="btn btn-outline-info btn-block btn-lg" role="button" 
+		href="{% if induction.show_name.has_foh_report %}{% url 'stuff:stuffFOHReport' induction.show_name.pk %}{% else %}{% url 'stuff:stuffFOHReportNew' induction.show_name.pk %}{% endif %}">
+		{% if not induction.show_name.has_foh_report %}
+			Add Front of House report
+		{% else %}
+			View Front of House report
+		{% endif %}
+		</a>
+	</div>
+	<div class="col">
+		<a class="btn btn-outline-info btn-block btn-lg" role="button" 
+		href="{% if induction.show_name.has_venue_report %}{% url 'stuff:stuffVenueReport' induction.show_name.pk %}{% else %}{% url 'stuff:stuffVenueReportNew' induction.show_name.pk %}{% endif %}">
+		{% if not induction.show_name.has_venue_report %}
+			Add Venue report
+		{% else %}
+			View Venue report
+		{% endif %}
+		</a>
+	</div>
+</div>
+
+{% endblock %}

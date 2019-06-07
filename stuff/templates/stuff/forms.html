@@ -1,0 +1,14 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<h1 class="text-center">{{ report_title }}</h1>
+<form role="form" method="POST">
+	{% csrf_token %}
+	<table class="table">
+	{{ form.as_table }}
+	<tr><td><button class="btn btn-lg btn-secondary" role="button" type="submit"><i class="fa fa-fw fa-check"></i> Submit</button></td></tr>
+	</table>
+</form>
+
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ venuereport }}{% endblock %}
+
+{% block content %}
+<h1 class="text-center">{{ venuereport }}</h1>
+<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffVenueReportEdit' venuereport.show_name.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+<hr>
+<div class="row">
+	<div class="col-md">
+		<h2 class="text-center">Get In</h2>
+		<table class="table">
+			<tr>
+				<td><h5>Timings</h5></td>
+				<td><strong>Scheduled start time: </strong>{{ venuereport.show_name.slot_start }}<br />
+				<strong>Actual start time: </strong>{{ venuereport.slot_start }}</td>
+			</tr>
+			<tr>
+				<td><h5>Notes</h5></td>
+				<td>{% if not venuereport.get_in_notes %}<em>None entered</em>{% else %}{{ venuereport.get_in_notes }}{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md">
+		<h2 class="text-center">Performance</h2>
+		<table class="table">
+			<tr>
+				<td><h5>Start Time</h5></td>
+				<td><strong>Scheduled: </strong>{{ venuereport.show_name.performance_start }}<br />
+				<strong>Actual: </strong>{{ venuereport.performance_start }}</td>
+			</tr>
+			<tr>
+				<td><h5>End Time</h5></td>
+				<td><strong>Scheduled: </strong>{{ venuereport.show_name.performance_end }}<br />
+				<strong>Actual: </strong>{{ venuereport.performance_end }}<br />
+				<strong>House Clear: </strong>{{ venuereport.house_clear }}</td>
+			</tr>
+			<tr>
+				<td><h5>Performance Notes</h5></td>
+				<td>{% if not venuereport.performance_notes %}<em>None entered</em>{% else %}{{ venuereport.performance_notes }}{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md">
+		<h2 class="text-center">Get Out</h2>
+		<table class="table">
+			<tr>
+				<td><h5>Timings</h5></td>
+				<td><strong>Scheduled start time: </strong>{{ venuereport.show_name.slot_end }}<br />
+				<strong>Actual start time: </strong>{{ venuereport.slot_end }}</td>
+			</tr>
+			<tr>
+				<td><h5>Notes</h5></td>
+				<td>{% if not venuereport.get_out_notes %}<em>None entered</em>{% else %}{{ venuereport.get_out_notes }}{% endif %}</td>
+			</tr>
+		</table>
+	</div>
+
+</div>
+<div class="row">
+	<div class="col">
+		<h2>Other Notes</h2>
+		<p>{% if not venuereport.notes %}<em>None entered</em>{% else %}{{ venuereport.notes }}{% endif %}</p>
+	</div>
+</div>
+{% endblock %}

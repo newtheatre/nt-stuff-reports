@@ -1,0 +1,17 @@
+	<div class="{% if card %}card-header{% else %}mr-5{% endif %}">
+		{% if not datetime_only %}
+		<div class="text-center">
+			<h2>
+				"{{ show.show_name }}"
+				{% if not company_page %}<br /><small><a href="{% url 'stuff:stuffCompanySingle' show.company_name.pk %}">{{ show.company_name }}</a></small>{% endif %}
+			</h2>
+			<h4>{{ show.show_date }} | {{ show.performance_venue }}</h4>
+		</div>
+		{% endif %}
+		<div class="row h5">
+			<div class="col{% if card %}-5{% endif %} text-right"><strong>Slot: </strong></div><div class="col">{{ show.slot_start }} - {{ show.slot_end }}</div>
+		</div>
+		<div class="row h5">
+			<div class="col{% if card %}-5{% endif %} text-right"><strong>Performance: </strong></div><div class="col">{{ show.performance_start }} - {{ show.performance_end }}</div>
+		</div>
+	</div>

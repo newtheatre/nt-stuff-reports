@@ -1,0 +1,19 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ fohreport }}{% endblock %}
+
+{% block content %}
+<h1 class="text-center">{{ fohreport }}</h1>
+<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffFOHReportEdit' fohreport.show_name.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+{% include 'stuff/include/show_header.html' with show=fohreport.show_name datetime_only=1 %}
+<hr>
+<div class="row">
+	<div class="col-md-6">
+		<h3>Audience Behaviour</h3>
+		<p>{% if not fohreport.audience_behaviour %}<em>None recorded</em>{% else %}{{ fohreport.audience_behaviour }}{% endif %}</p>
+	</div>
+	<div class="col-md-6">
+		<h3>Foyer Atmosphere</h3>
+		<p>{% if not fohreport.foyer_atmosphere %}<em>None recorded</em>{% else %}{{ fohreport.foyer_atmosphere }}{% endif %}</p>
+	</div>
+</div>
+{% endblock %}
