@@ -2,9 +2,20 @@
 {% block title %}{{ fohreport }}{% endblock %}
 
 {% block content %}
-<h1 class="text-center">{{ fohreport }}</h1>
-<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffFOHReportEdit' fohreport.show_name.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">{{ fohreport }}</h1>
+	</div>
+	{% if user.is_staff %}
+	<div class="col-2 float-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffFOHReportEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+	{% endif %}
+</div>
+<hr>
 {% include 'stuff/include/show_header.html' with show=fohreport.show_name datetime_only=1 %}
+<hr>
+{% include 'stuff/include/show_buttons.html' with show=show report="foh" %}
 <hr>
 <div class="row">
 	<div class="col-md-6">

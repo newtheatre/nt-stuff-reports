@@ -35,6 +35,8 @@ class Company(models.Model):
 		return self.name 
 
 class Show(models.Model):
+	class Meta:
+		ordering = ['show_date','performance_start']
 	company_name = models.ForeignKey(
 		Company,
 		on_delete=models.DO_NOTHING

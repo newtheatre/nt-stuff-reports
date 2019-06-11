@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +131,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+LOGIN_URL = 'stuff:stuffLogin'
+LOGIN_REDIRECT_URL = 'stuff:stuffCurrentShows'
+LOGOUT_REDIRECT_URL = 'stuff:stuffLogin'

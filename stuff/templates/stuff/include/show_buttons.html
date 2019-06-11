@@ -1,0 +1,40 @@
+<div class="row mb-2">
+	{% if report %}
+	<div class="col">
+		<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffInduction' show.pk %}">View Show Details</a>
+	</div>
+	{% endif %}
+	{% if report != "requirements" %}
+	<div class="col">
+		{% if show.has_requirements %}
+			<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffRequirements' show.pk %}">View Changeover Notes</a>
+		{% elif user.is_staff %}
+			<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffRequirementsNew' show.pk %}">Add Requirements</a>
+		{% else %}
+			<a class="btn btn-outline-info btn-block btn-lg disabled" role="button">No changeover notes given</a>
+		{% endif %}
+	</div>
+	{% endif %}
+	{% if report != "foh" %}
+	<div class="col">
+		{% if show.has_foh_report %}
+			<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffFOHReport' show.pk %}">View Front of House report</a>
+		{% elif user.is_staff %}
+			<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffFOHReportNew' show.pk %}">Add Front of House report</a>
+		{% else %}
+			<a class="btn btn-outline-info btn-block btn-lg disabled" role="button">No front of house report available</a>
+		{% endif %}
+	</div>
+	{% endif %}
+	{% if report != "venue" %}
+	<div class="col">
+		{% if show.has_venue_report %}
+			<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffVenueReport' show.pk %}">View Venue report</a>
+		{% elif user.is_staff %}
+			<a class="btn btn-outline-info btn-block btn-lg" role="button" href="{% url 'stuff:stuffVenueReportNew' show.pk %}">Add Venue report</a>
+		{% else %}
+			<a class="btn btn-outline-info btn-block btn-lg disabled" role="button">No venue report available</a>
+		{% endif %}
+	</div>
+	{% endif %}
+</div>

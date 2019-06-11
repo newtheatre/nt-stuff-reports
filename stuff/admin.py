@@ -23,14 +23,13 @@ class ShowAdmin(admin.ModelAdmin):
 			),
 		}),
 	)
+	list_display = ('show_name','company_name','show_date','performance_venue','performance_start', 'performance_end')
 
 class RequirementAdmin(admin.ModelAdmin):
 	fieldsets = (
 		(None,{
 			'fields': (
 				'show_name',
-
-
 			),
 		}),
 		('Theatre',{
@@ -59,6 +58,11 @@ class RequirementAdmin(admin.ModelAdmin):
 			),
 		}),
 	)
+
+class InductionAdmin(admin.ModelAdmin):
+	formfield_overrides = {
+		models.ManyToManyField: {'widget': CheckboxSelectMultiple},
+	}
 
 class VenueReportAdmin(admin.ModelAdmin):
 	fieldsets = (
@@ -93,7 +97,7 @@ class VenueReportAdmin(admin.ModelAdmin):
 admin.site.register(Venue)
 admin.site.register(Company)
 admin.site.register(Show, ShowAdmin)
-admin.site.register(Induction)
+admin.site.register(Induction, InductionAdmin)
 admin.site.register(VenueReport, VenueReportAdmin)
 admin.site.register(FOHReport)
 admin.site.register(LogReport)

@@ -6,17 +6,21 @@
 	<div class="col-8 offset-2">
 		<h1 class="text-center">{{ induction }}</h1>
 	</div>
+	{% if user.is_staff %}
 	<div class="col-2 float-right">
-		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffInductionEdit' induction.show_name.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffInductionEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
 	</div>
+	{% endif %}
 </div>
 <hr>
-{% include 'stuff/include/show_header.html' with show=induction.show_name datetime_only=1 %}
+{% include 'stuff/include/show_header.html' with show=show datetime_only=1 %}
+<hr>
+{% include 'stuff/include/show_buttons.html' with show=show %}
 <hr>
 <div class="row">
 	<div class="col-md-6">
 		<h2>Show Info</h2>
-		<p>Primary contact: {{ induction.show_member }}</p>{% if induction.show_role %}<p><em>{{ induction.show_role }}</em></p>{% endif %}
+		<p>Primary contact: {{ induction.show_member }} {% if induction.show_role %}<em>({{ induction.show_role }})</em></p>{% endif %}
 		<p>Their phone number: {{ induction.show_phone }}</p>
 	</div>
 	<div class="col-md-6">
@@ -56,38 +60,5 @@
 {% endif %}
 <hr>
 <p class="text-muted text-center">Last updated by {{ induction.author }} on {{ induction.timestamp }}</p>
-<hr>
-<div class="row mb-2">
-	<div class="col">
-		<a class="btn btn-outline-info btn-block btn-lg" role="button" 
-		href="{% if induction.show_name.has_requirements %}{% url 'stuff:stuffRequirements' induction.show_name.pk %}{% else %}{% url 'stuff:stuffRequirementsNew' induction.show_name.pk %}{% endif %}">
-		{% if not induction.show_name.has_requirements %}
-			Add Requirements
-		{% else %}
-			View Changeover Notes
-		{% endif %}
-		</a>
-	</div>
-	<div class="col">
-		<a class="btn btn-outline-info btn-block btn-lg" role="button" 
-		href="{% if induction.show_name.has_foh_report %}{% url 'stuff:stuffFOHReport' induction.show_name.pk %}{% else %}{% url 'stuff:stuffFOHReportNew' induction.show_name.pk %}{% endif %}">
-		{% if not induction.show_name.has_foh_report %}
-			Add Front of House report
-		{% else %}
-			View Front of House report
-		{% endif %}
-		</a>
-	</div>
-	<div class="col">
-		<a class="btn btn-outline-info btn-block btn-lg" role="button" 
-		href="{% if induction.show_name.has_venue_report %}{% url 'stuff:stuffVenueReport' induction.show_name.pk %}{% else %}{% url 'stuff:stuffVenueReportNew' induction.show_name.pk %}{% endif %}">
-		{% if not induction.show_name.has_venue_report %}
-			Add Venue report
-		{% else %}
-			View Venue report
-		{% endif %}
-		</a>
-	</div>
-</div>
 
 {% endblock %}

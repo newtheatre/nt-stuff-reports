@@ -5,8 +5,16 @@ from . import views
 app_name = 'stuff'
 urlpatterns = [
 
-	path('', views.ShowView.as_view(), name='stuffCompanies'),
-	path('show/', views.ShowView.as_view(), name='stuffCompanies'),
+	# Authentication
+	#/login
+	path('login/', views.stuffLoginView.as_view(), name='stuffLogin'),
+	#/logout
+	path('logout/', views.stuffLogoutView.as_view(), name='stuffLogout'),
+
+	# Shows 
+	path('', views.ShowView.as_view(), name='stuffCurrentShows'),
+	path('show/', views.ShowView.as_view(), name='stuffCurrentShows'),
+	path('show/all', views.ShowArchiveView.as_view(), name='stuffShowArchive'),
 	path('show/<int:pk>/', views.InductionView.as_view(), name='stuffInduction'),
 	path('show/<int:pk>/', include([
 		path('start/', views.InductionNewView.as_view(), name='stuffInductionNew'),

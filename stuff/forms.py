@@ -16,9 +16,9 @@ class InductionForm(forms.ModelForm):
 		widgets = {
 			'show_phone': forms.widgets.TextInput(),
 				## TODO: Don't strip starting 0
+			'show_stop': forms.widgets.CheckboxSelectMultiple(),
 		}
 
-	# form.fields['show_name'].queryset = Show.objects.has_induction()
 	# show_name = Show.objects.filter(has_induction is not None)
 	# Change field.show_name to be Show.objects.filter(has_induction=False)
 	# Set field.show_name to be read-only when editing (as below, potentially)

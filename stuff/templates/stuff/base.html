@@ -33,12 +33,33 @@
 	</head>
 	<body> 
 		<div class="container">
-			<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light mb-4">
+			<nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light mb-4">
 			  <div class="collapse navbar-collapse" id="navigation">
 			    <ul class="navbar-nav mr-auto">
+			      {% if user.is_authenticated %}
+		      	<div class="dropdown text-right">
+		      		<li class="nav-item">
+		      			<a href="#" class="dropdown-toggle nav-item nav-link" data-toggle="dropdown">Hi, {% if user.first_name %}{{ user.first_name|title }}{% else %}{{ user|title }}{% endif %}. <i class="caret"></i></a>
+		      			<ul class="dropdown-menu">
+		      				{% if user.is_staff %}
+		      					<li><a href="/admin" class="dropdown-item">Admin</a></li>
+		      				{% endif %}
+		      				<li><a href="{% url 'stuff:stuffLogout' %}" class="dropdown-item">Logout</a></li>
+		      			</ul>
+		      		</li>
+		      	</div>
+		      	{% else %}
 			      <li class="nav-item">
-			        <a class="nav-link" href="{% url 'stuff:stuffCompanies' %}">All Shows</a>
+			        <a class="nav-link" href="{% url 'stuff:stuffLogin' %}">Login</a>
 			      </li>
+			      {% endif %}
+			      <li class="nav-item">
+			        <a class="nav-link" href="{% url 'stuff:stuffCurrentShows' %}">Upcoming Shows</a>
+			      </li>
+			      <li class="nav-item">
+			        <a class="nav-link" href="{% url 'stuff:stuffShowArchive' %}">All Shows</a>
+			      </li>
+			      {% if user.is_staff %}
 			      <li class="nav-item">
 			        <a class="nav-link" href="{% url 'stuff:stuffRequirementsBlankNew' %}">New Requirements Form</a>
 			      </li>
@@ -51,17 +72,24 @@
 			      <li class="nav-item">
 			        <a class="nav-link" href="{% url 'stuff:stuffVenueReportBlankNew' %}">New Venue Report</a>
 			      </li>
+			      {% endif %}
 			      <li class="nav-item">
-			        <a class="nav-link" href="#">New Log Report</a>
-			      </li>
-			      <li class="nav-item">
-			      	<a class="nav-link float-right" href="/admin">Admin</a>
+			        <a class="nav-link" href="#">New Log Entry</a>
 			      </li>
 			    </ul>
 			  </div>
 			</nav>
 		</div>
 		<div class="container">
+			{% for message in messages %}
+				<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissable">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					{% if message.tags == 'alert' %}<i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;
+					{% else %}<i class="fa fa-fw fa-info-circle"></i>&nbsp;
+					{% endif %}
+					{{ message }}
+				</div>
+			{% endfor %}
 			{% block content %}
 				<p>No content defined.</p>
 			{% endblock %}

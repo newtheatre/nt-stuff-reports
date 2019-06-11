@@ -1,30 +1,58 @@
+from django.contrib import messages, auth
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.signals import user_logged_in, user_logged_out
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import generic
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from .models import *
 from .forms import *
+from datetime import datetime, timedelta
 
-# Create your views here.
+# Festival Views
 
 class PageNotFoundView(generic.ListView):
 	template_name = "stuff/404.html"
 
+@method_decorator(login_required, name='dispatch')
 class ShowView(generic.ListView):
 	template_name = "stuff/index.html"
 	context_object_name = 'show'
 	model = Show 
 
+	def get_queryset(self):
+		# Only the current shows 
+		# return Show.objects.filter()
+		# Any shows whose slots have ended over an hour ago should be filtered 
+
+		time_filter = datetime.now() - timedelta(hours=1)
+		date_filter = datetime.now() - timedelta(days=1)
+		# time_filter = datetime.now().time().AddHours(1)
+		return Show.objects.filter(show_date__gte=date_filter).filter(slot_end__gte=time_filter)
+
+@method_decorator(login_required, name='dispatch')
+class ShowArchiveView(generic.ListView):
+	template_name = "stuff/index.html"
+	context_object_name = 'show'
+	model = Show
+
+@method_decorator(login_required, name='dispatch')
 class CompanyView(generic.DetailView):
 	# Show company info, and list shows by company 
 	template_name = "stuff/company-detail.html"
 	model = Company 
 
+@method_decorator(login_required, name='dispatch')
 class CompanyListView(generic.ListView):
 	template_name = "stuff/company-list.html"
 	model = Company 
 
+@method_decorator(login_required, name='dispatch')
 class RequirementsView(generic.DetailView):
 	model = Show
 	template_name = 'stuff/requirements-detail.html'
@@ -34,6 +62,8 @@ class RequirementsView(generic.DetailView):
 		context['requirement'] = Requirement.objects.filter(show_name=self.object.pk)[0]
 		return context
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class RequirementsNewView(SuccessMessageMixin, CreateView):
 	model = Requirement 
 	form_class = RequirementForm 
@@ -41,7 +71,7 @@ class RequirementsNewView(SuccessMessageMixin, CreateView):
 	success_message = "Company requirements added"
 
 	def get_success_url(self):
-		return reverse_lazy('stuff:stuffRequirements', kwargs={'pk': self.object.pk })
+		return reverse_lazy('stuff:stuffRequirements', kwargs={'pk': self.object.show_name.pk })
 
 	def get_context_data(self, **kwargs):
 		context = super(RequirementsNewView, self).get_context_data(**kwargs)
@@ -60,6 +90,8 @@ class RequirementsNewView(SuccessMessageMixin, CreateView):
 			initial['show_name'] = show_title[0]	
 		return initial
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class RequirementsEditView(SuccessMessageMixin, UpdateView):
 	form_class = RequirementForm 
 	template_name = "stuff/forms.html"
@@ -78,6 +110,7 @@ class RequirementsEditView(SuccessMessageMixin, UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('stuff:stuffRequirements', kwargs={'pk': self.kwargs.get(self.pk_url_kwarg) })
 
+@method_decorator(login_required, name='dispatch')
 class InductionView(generic.DetailView):
 	template_name = "stuff/show-detail.html"
 	model = Show
@@ -87,6 +120,8 @@ class InductionView(generic.DetailView):
 		context['induction'] = Induction.objects.filter(show_name=self.object.pk)[0]
 		return context
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class InductionNewView(SuccessMessageMixin, CreateView):
 	model = Induction 
 	form_class = InductionForm 
@@ -94,7 +129,7 @@ class InductionNewView(SuccessMessageMixin, CreateView):
 	success_message = "Company set up!"
 
 	def get_success_url(self):
-		return reverse_lazy('stuff:stuffInduction', kwargs={'pk': self.object.pk })
+		return reverse_lazy('stuff:stuffInduction', kwargs={'pk': self.object.show_name.pk })
 
 	def get_context_data(self, **kwargs):
 		context = super(InductionNewView, self).get_context_data(**kwargs)
@@ -111,9 +146,16 @@ class InductionNewView(SuccessMessageMixin, CreateView):
 		if self.kwargs:
 			show_title = Show.objects.filter(pk=self.kwargs['pk'])
 			initial['show_name'] = show_title[0]
-		initial['author'] = self.request.user		
+
+		if self.request.user.first_name or self.request.user.last_name:
+			user_string = str(self.request.user.first_name) + ' ' + str(self.request.user.last_name)
+		else:
+			user_string = str(self.request.user)
+		initial['author'] = user_string
 		return initial
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class InductionEditView(SuccessMessageMixin, UpdateView):
 	form_class = InductionForm 
 	template_name = "stuff/forms.html"
@@ -132,6 +174,7 @@ class InductionEditView(SuccessMessageMixin, UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('stuff:stuffInduction', kwargs={'pk': self.kwargs.get(self.pk_url_kwarg) })
 
+@method_decorator(login_required, name='dispatch')
 class VenueReportView(generic.DetailView):
 	template_name = "stuff/report-venue.html"
 	model = Show
@@ -141,6 +184,8 @@ class VenueReportView(generic.DetailView):
 		context['venuereport'] = VenueReport.objects.filter(show_name=self.object.pk)[0]
 		return context
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class VenueReportNewView(SuccessMessageMixin, CreateView):
 	model = VenueReport
 	form_class = VenueReportForm 
@@ -148,7 +193,7 @@ class VenueReportNewView(SuccessMessageMixin, CreateView):
 	success_message = "Venue report created" 
 
 	def get_success_url(self):
-		return reverse_lazy('stuff:stuffVenueReport', kwargs={'pk': self.object.pk })
+		return reverse_lazy('stuff:stuffVenueReport', kwargs={'pk': self.object.show_name.pk })
 
 	def get_context_data(self, **kwargs):
 			context = super(VenueReportNewView, self).get_context_data(**kwargs)
@@ -167,6 +212,8 @@ class VenueReportNewView(SuccessMessageMixin, CreateView):
 			initial['show_name'] = show_title[0]
 		return initial
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class VenueReportEditView(SuccessMessageMixin, UpdateView):
 	form_class = VenueReportForm
 	template_name = "stuff/forms.html"
@@ -185,6 +232,7 @@ class VenueReportEditView(SuccessMessageMixin, UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('stuff:stuffVenueReport', kwargs={'pk': self.kwargs.get(self.pk_url_kwarg) })
 
+@method_decorator(login_required, name='dispatch')
 class FOHReportView(generic.DetailView):
 	template_name = "stuff/report-foh.html"
 	model = Show
@@ -194,6 +242,8 @@ class FOHReportView(generic.DetailView):
 		context['fohreport'] = FOHReport.objects.filter(show_name=self.object.pk)[0]
 		return context
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class FOHReportNewView(SuccessMessageMixin, CreateView):
 	model = FOHReport 
 	form_class = FOHReportForm
@@ -201,7 +251,7 @@ class FOHReportNewView(SuccessMessageMixin, CreateView):
 	success_message = "Front of House report created"
 
 	def get_success_url(self):
-		return reverse_lazy('stuff:stuffFOHReport', kwargs={'pk': self.object.pk })
+		return reverse_lazy('stuff:stuffFOHReport', kwargs={'pk': self.object.show_name.pk })
 
 	def get_context_data(self, **kwargs):
 			context = super(FOHReportNewView, self).get_context_data(**kwargs)
@@ -220,6 +270,8 @@ class FOHReportNewView(SuccessMessageMixin, CreateView):
 			initial['show_name'] = show_title[0]
 		return initial
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class FOHReportEditView(SuccessMessageMixin, UpdateView):
 	form_class = FOHReportForm
 	template_name = "stuff/forms.html"
@@ -237,3 +289,12 @@ class FOHReportEditView(SuccessMessageMixin, UpdateView):
 
 	def get_success_url(self):
 		return reverse_lazy('stuff:stuffFOHReport', kwargs={'pk': self.kwargs.get(self.pk_url_kwarg) })
+
+# Authentication Views
+
+class stuffLoginView(auth_views.LoginView):
+	template_name = "stuff/login.html"
+
+class stuffLogoutView(auth_views.LogoutView):
+	extra_context = {'logged_out': True }
+	template_name = "stuff/index.html"
