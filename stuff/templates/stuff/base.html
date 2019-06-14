@@ -43,8 +43,16 @@
 
 	</head>
 	<body> 
-		<div class="container">
-			<nav class="navbar sticky-top navbar-expand-sm navbar-light bg-light mb-4">
+		<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light mb-4">
+			<div class="container">
+		  	<div class="col">
+		      <a class="navbar-brand" href="{% url 'stuff:stuffCurrentShows' %}">
+		        <img src="https://newtheatre.org.uk/images/logos/nt_logo-web.png" width=100px />
+		      </a>
+				  <button class="navbar-toggler float-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+				    <span class="navbar-toggler-icon"></span>
+				  </button>
+		    </div>
 				<div class="collapse navbar-collapse" id="navigation">
 					<ul class="navbar-nav mr-auto">
 						{% if user.is_authenticated %}
@@ -89,8 +97,8 @@
 						</li>
 					</ul>
 				</div>
-			</nav>
-		</div>
+			</div>
+		</nav>
 		<div class="container">
 			{% for message in messages %}
 				<div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissable">

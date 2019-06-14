@@ -31,7 +31,7 @@
 				{% else %}
 					<div class="row px-2 mt-2">
 						<div class="col py-3">Front of House Report</div>
-						<div class="col text-right"><a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffFOHReport' show.pk %}"><i class="fa fa-fw fa-lg fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffFOHReportEdit' show.pk %}"><i class="fa fa-fw fa-lg fa-edit"></i></a>{% endif %}</div>
+						<div class="col text-right"><a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffFOHReport' show.pk %}"><i class="fa fa-fw  fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffFOHReportEdit' show.pk %}"><i class="fa fa-fw  fa-edit"></i></a>{% endif %}</div>
 					</div>
 				{% endif %}
 				
@@ -44,7 +44,7 @@
 				{% else %}
 				<div class="row px-2 mt-2">
 					<div class="col py-3">Venue Report</div>
-					<div class="col text-right"><a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffVenueReport' show.pk %}"><i class="fa fa-fw fa-lg fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffVenueReportEdit' show.pk %}"><i class="fa fa-fw fa-lg fa-edit"></i></a>{% endif %}</div>
+					<div class="col text-right"><a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffVenueReport' show.pk %}"><i class="fa fa-fw  fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffVenueReportEdit' show.pk %}"><i class="fa fa-fw  fa-edit"></i></a>{% endif %}</div>
 				</div>
 				{% endif %}
 			{% else %}
