@@ -21,3 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^', include('stuff.urls')),
 ]
+
+admin.site.site_header = "StuFF at the Nottingham New Theatre"
+admin.site.site_title = "StuFF Admin"

@@ -26,14 +26,10 @@ class ShowView(generic.ListView):
 	model = Show 
 
 	def get_queryset(self):
-		# Only the current shows 
-		# return Show.objects.filter()
-		# Any shows whose slots have ended over an hour ago should be filtered 
-
 		time_filter = datetime.now() - timedelta(hours=1)
 		date_filter = datetime.now() - timedelta(days=1)
-		# time_filter = datetime.now().time().AddHours(1)
-		return Show.objects.filter(show_date__gte=date_filter).filter(slot_end__gte=time_filter)
+		return Show.objects.filter(show_date__gte=date_filter)
+		# TODO: Can we still do this? .filter(slot_end__gte=time_filter)
 
 @method_decorator(login_required, name='dispatch')
 class ShowArchiveView(generic.ListView):
@@ -118,6 +114,11 @@ class InductionView(generic.DetailView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context['induction'] = Induction.objects.filter(show_name=self.object.pk)[0]
+
+		# Add this show's show stop triggers, and the remaining ones
+		context['this_show_stop'] = context['induction'].show_stop.all()
+		context['remaining_show_stop'] = ShowStop.objects.all().difference(context['this_show_stop'])
+
 		return context
 
 @method_decorator(login_required, name='dispatch')
@@ -189,7 +190,7 @@ class VenueReportView(generic.DetailView):
 class VenueReportNewView(SuccessMessageMixin, CreateView):
 	model = VenueReport
 	form_class = VenueReportForm 
-	template_name = "stuff/forms.html"
+	template_name = "stuff/report-venue.html"
 	success_message = "Venue report created" 
 
 	def get_success_url(self):
@@ -201,8 +202,10 @@ class VenueReportNewView(SuccessMessageMixin, CreateView):
 			if self.kwargs:
 				show_title = Show.objects.filter(pk=self.kwargs['pk'])
 				context['report_title'] = 'New Venue report for ' + str(show_title[0])
+				context['venuereport'] = {'show_name': show_title[0]}
 			else:
 				context['report_title'] = context['page_title']
+			context['using_time'] = "True"
 			return context
 
 	def get_initial(self):
@@ -216,7 +219,7 @@ class VenueReportNewView(SuccessMessageMixin, CreateView):
 @method_decorator(staff_member_required, name='dispatch')
 class VenueReportEditView(SuccessMessageMixin, UpdateView):
 	form_class = VenueReportForm
-	template_name = "stuff/forms.html"
+	template_name = "stuff/report-venue.html"
 	success_message = "Edit successful"
 
 	def get_context_data(self, **kwargs):
@@ -224,6 +227,7 @@ class VenueReportEditView(SuccessMessageMixin, UpdateView):
 		show_title = Show.objects.filter(pk=self.kwargs['pk'])
 		context['report_title'] = 'Edit Venue Report for ' + str(show_title[0])
 		context['page_title'] = 'Edit Venue Report'
+		context['using_time'] = "True"
 		return context
 
 	def get_object(self):

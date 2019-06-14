@@ -16,10 +16,10 @@
 			</div>
 		{% endif %}
 		{% if next %} 
-			{% if "edit" in next or "new" in next %}
-				<div class="row">
-					<div class="alert alert-warning col-8 mx-auto" role="alert"><i class="fa fa-info fa-fw"></i> You need to log in to do that. Accounts are available to New Theatre technical and workshop committee.</div>
-				</div>
+			{% if next != "/" %}
+			<div class="row">
+				<div class="alert alert-warning col-8 mx-auto" role="alert"><i class="fa fa-info fa-fw"></i> You need to log in to do that.</div>
+			</div>
 			{% endif %}
 		{% endif %}
 		{# Actual login form #}

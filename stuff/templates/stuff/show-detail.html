@@ -6,11 +6,6 @@
 	<div class="col-8 offset-2">
 		<h1 class="text-center">{{ induction }}</h1>
 	</div>
-	{% if user.is_staff %}
-	<div class="col-2 float-right">
-		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffInductionEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-	</div>
-	{% endif %}
 </div>
 <hr>
 {% include 'stuff/include/show_header.html' with show=show datetime_only=1 %}
@@ -35,6 +30,7 @@
 <div class="row">
 	<div class="col-md-6">
 		<h2>Show Stop Triggers</h2>
+		<span>The following occur within the show and are <strong>not</strong> cause to stop the show:</span>
 		{% if induction.show_stop.all %}
 			<ul>
 				{% for trigger in induction.show_stop.all %}
@@ -45,6 +41,14 @@
 			<p><em>No show stop triggers.</em></p>
 		{% endif %}
 		{% if induction.show_stop_notes %}<p>{{ induction.show_stop_notes }}</p>{% endif %}
+		{% if remaining_show_stop %}
+		<span>The show should be stopped if any of the following are seen:</span>
+		<ul>
+			{% for trigger in remaining_show_stop %}
+				<li>{{ trigger }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
 	</div>
 	<div class="col-md-6">
 		<h2>Show Ending</h2>
@@ -52,9 +56,16 @@
 	</div>
 </div>
 {% if induction.show_name.ticketing_id %}
-<div class="row">
+<div class="row mb-2">
 	<div class="col">
 		<a class="btn btn-block btn-success" target="_blank" href="https://ticketing.newtheatre.org.uk/show/{{ induction.show_name.ticketing_id }}/0"><span class="h4"><i class="fa fa-fw fa-ticket-alt"></i> Sell tickets for this show</span></a>
+	</div>
+</div>
+{% endif %}
+{% if user.is_staff %}
+<div class="row">
+	<div class="col text-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffInductionEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
 	</div>
 </div>
 {% endif %}

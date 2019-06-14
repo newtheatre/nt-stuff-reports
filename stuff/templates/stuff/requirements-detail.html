@@ -6,11 +6,6 @@
 	<div class="col-8 offset-2">
 		<h1 class="text-center">{{ requirement }}</h1>
 	</div>
-	{% if user.is_staff %}
-	<div class="col-2 float-right">
-		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffRequirementsEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-	</div>
-	{% endif %}
 </div>
 <hr>
 {% include 'stuff/include/show_header.html' with show=show datetime_only=1 %}
@@ -22,15 +17,15 @@
 		<h2>Theatre</h2>
 		<table class="table">
 			<tr>
-				<td><strong>Using Workshop:</strong> {{ requirement.using_workshop }}</td>
-				<td><strong>Using Storage:</strong> {{ requirement.using_storage }}<br /><em>{{ requirement.storage_notes }}</em></td>
+				<td><strong>Using Workshop:</strong> {{ requirement.using_workshop|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}</td>
+				<td><strong>Using Storage:</strong> {{ requirement.using_storage|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}<br /><em>{{ requirement.storage_notes }}</em></td>
 			</tr>
 			<tr>
-				<td><strong>Using Props:</strong> {{ requirement.using_props }}<br /><em>{{ requirement.prop_notes }}</em></td>
+				<td><strong>Using Props:</strong> {{ requirement.using_props|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}<br /><em>{{ requirement.prop_notes }}</em></td>
 				<td><strong>Rigging:</strong> {{ requirement.rigging }}</td>
 			</tr>
 			<tr>
-				<td><strong>Fire Alarm Disabled:</strong> {{ requirement.fire_alarm_disabled }}</td>
+				<td><strong>Fire Alarm Disabled:</strong> {{ requirement.fire_alarm_disabled|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}</td>
 				<td><strong>Effects:</strong> {{ requirement.effects }}</td>
 			</tr>
 			<tr>
@@ -74,6 +69,13 @@
 		</table>
 	</div>
 </div>
+{% if user.is_staff %}
+<div class="row">
+	<div class="col text-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffRequirementsEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+</div>
+{% endif %}
 
 
 {% endblock %}

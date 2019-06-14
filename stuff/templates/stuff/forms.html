@@ -1,12 +1,39 @@
 {% extends 'stuff/base.html' %}
+{% load widget_tweaks %}
 {% block title %}{{ page_title }}{% endblock %}
 
 {% block content %}
+{% for error in form.errors %}
+	<div class="alert {% if error.tags %}alert-{{ error.tags }}{% endif %} alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		{% if error.tags == 'alert' %}<i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;
+		{% else %}<i class="fa fa-fw fa-info-circle"></i>&nbsp;
+		{% endif %}
+		{{ error }}
+	</div>
+{% endfor %}
 <h1 class="text-center">{{ report_title }}</h1>
 <form role="form" method="POST">
 	{% csrf_token %}
-	<table class="table">
-	{{ form.as_table }}
+
+	<hr>
+
+	{% for field in form %}
+	<div class="row form-group">
+		<div class="col col-md-10 mx-auto">
+			<p class="text-primary">{{ field.label_tag | title }}
+			{% if 'checkbox' in field|widget_type %}
+				{% render_field field %}
+			{% else %}
+				{% render_field field class+="form-control" placeholder+=field.label %}
+			{% endif %}
+			{% if field.help_text %}
+				<span class="text-muted"><em>{{ field.help_text|safe }}</em></span>
+			{% endif %}
+			</p>
+		</div>
+	</div>
+	{% endfor %}
 	<tr><td><button class="btn btn-lg btn-secondary" role="button" type="submit"><i class="fa fa-fw fa-check"></i> Submit</button></td></tr>
 	</table>
 </form>

@@ -1,4 +1,5 @@
 from django import forms 
+from .widgets import CustomTimePicker
 from stuff.models import *
 
 class RequirementForm(forms.ModelForm):
@@ -34,13 +35,14 @@ class VenueReportForm(forms.ModelForm):
 		model = VenueReport 
 		fields = '__all__'
 		exclude = { 'timestamp '}
-		widgets = {
-		# TODO (as below): Make the times be a time picker 
-			# ('slot_start', 'house_open', 
-			# 	'performance_start', 'performance_end'
-			# 	'house_clear', 'slot_end'): forms.widgets.TimeInput(),
-			# 'slot_start': forms.DateInput(attrs={'class':'timepicker'})
-		}
+
+	# Make the timepicker appear for all time-based fields automagically 
+	def __init__(self, *args, **kwargs):
+		super(VenueReportForm, self).__init__(*args, **kwargs)
+		for key, value in self.fields.items():
+			if key in ['slot_start', 'house_open', 'performance_start', 'performance_end',
+			'house_clear', 'slot_end']:
+				self.fields[key].widget = CustomTimePicker()
 
 class FOHReportForm(forms.ModelForm):
 	class Meta:

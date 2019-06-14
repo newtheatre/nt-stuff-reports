@@ -69,7 +69,7 @@ class VenueReportAdmin(admin.ModelAdmin):
 		(None,{
 			'fields': (
 				'show_name',
-				'notes',
+				'venue_notes',
 			)
 		}),
 		('Get In', {

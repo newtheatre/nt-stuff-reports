@@ -213,6 +213,7 @@ class Induction(models.Model):
 	show_stop = models.ManyToManyField(
 		ShowStop,
 		blank=True,
+		help_text="Please indicate the things that <strong>occur during the show</strong>"
 	)
 	show_stop_notes = models.TextField(
 		blank=True,
@@ -248,7 +249,7 @@ class VenueReport(models.Model):
 	house_clear = models.TimeField(blank=True, null=True)
 	get_out_notes = models.TextField(blank=True, null=True)
 	slot_end = models.TimeField(blank=True, null=True)
-	notes = models.TextField(blank=True, null=True)
+	venue_notes = models.TextField(blank=True, null=True, help_text="General notes")
 
 	def __str__(self):
 		display_string = 'Venue Report for ' + str(self.show_name)

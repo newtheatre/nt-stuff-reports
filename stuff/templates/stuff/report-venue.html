@@ -1,75 +1,108 @@
 {% extends 'stuff/base.html' %}
-{% block title %}{{ venuereport }}{% endblock %}
+{% if form %}
+	{% load widget_tweaks %}
+{% endif %}
+{% load timedelta %}
+{% block title %}
+{% if form %}{{ page_title }}{% else %}{{ venuereport }}{% endif %}
+{% endblock %}
 
 {% block content %}
 <div class="row">
 	<div class="col-8 offset-2">
-		<h1 class="text-center">{{ venuereport }}</h1>
+		<h1 class="text-center">{% if form %}{{ report_title }}{% else %}{{ venuereport }}{% endif %}</h1>
 	</div>
-	{% if user.is_staff %}
-	<div class="col-2 float-right">
-		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffVenueReportEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-	</div>
-	{% endif %}
 </div>
+{% for error in form.errors %}
+	<div class="alert {% if error.tags %}alert-{{ error.tags }}{% endif %} alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		{% if error.tags == 'alert' %}<i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;
+		{% else %}<i class="fa fa-fw fa-info-circle"></i>&nbsp;
+		{% endif %}
+		{{ error }}
+	</div>
+{% endfor %}
+{% if not form %}
 <hr>
 {% include 'stuff/include/show_buttons.html' with show=show report="venue" %}
 <hr>
+{% elif form %}
+<form role="form" method="POST">
+	{% csrf_token %}
+{% endif %}
+{% if form %}
+	{% if venuereport %}
+		{% render_field form.show_name class+="d-none" %}
+	{% else %}
+	<div class="row mb-4">
+		<div class="col-8 offset-2">
+			<h3>Select a show</h3>
+			{% render_field form.show_name class+="form-control" %}
+		</div>
+	</div>
+	{% endif %}
+{% endif %}
 <div class="row">
-	<div class="col-md">
-		<h2 class="text-center">Get In</h2>
-		<table class="table">
+	<table class="table table-striped table-bordered table-responsive">
+		<thead>
+			<td></td>
+			{% if venuereport %}<td><h2>Scheduled Time</h2></td>{% endif %}
+			<td><h2>Actual Time</h2></td>
+			<td><h2>Notes</h2></td>
+		</thead>
+		<tbody>
 			<tr>
-				<td><h5>Timings</h5></td>
-				<td><strong>Scheduled start time: </strong>{{ venuereport.show_name.slot_start }}<br />
-				<strong>Actual start time: </strong>{{ venuereport.slot_start }}</td>
+				<td><h3>Get In Start</h3></td>
+				{% if venuereport %}<td>{{ venuereport.show_name.slot_start }}</td>{% endif %}
+				<td>{% if form %}{% render_field form.slot_start %}{% else %}{{ venuereport.slot_start }}{% endif %}</td>
+				<td rowspan="2">{% if form %}{% render_field form.get_in_notes class+="form-control" placeholder+=form.get_in_notes.label %}{% else %}{% if not venuereport.get_in_notes %}<em>None entered</em>{% else %}{{ venuereport.get_in_notes }}{% endif %}{% endif %}</td>
 			</tr>
 			<tr>
-				<td><h5>Notes</h5></td>
-				<td>{% if not venuereport.get_in_notes %}<em>None entered</em>{% else %}{{ venuereport.get_in_notes }}{% endif %}</td>
-			</tr>
-		</table>
-	</div>
-	<div class="col-md">
-		<h2 class="text-center">Performance</h2>
-		<table class="table">
-			<tr>
-				<td><h5>Start Time</h5></td>
-				<td><strong>Scheduled: </strong>{{ venuereport.show_name.performance_start }}<br />
-				<strong>Actual: </strong>{{ venuereport.performance_start }}</td>
+				<td><h3>House Open</h3></td>
+				{% if venuereport %}<td>{{ venuereport.show_name.performance_start|time_diff:"-5" }}</td>{% endif %}
+				<td>{% if form %}{% render_field form.house_open %}{% else %}{{ venuereport.house_open }}{% endif %}</td>
 			</tr>
 			<tr>
-				<td><h5>End Time</h5></td>
-				<td><strong>Scheduled: </strong>{{ venuereport.show_name.performance_end }}<br />
-				<strong>Actual: </strong>{{ venuereport.performance_end }}<br />
-				<strong>House Clear: </strong>{{ venuereport.house_clear }}</td>
+				<td><h3>Show Start</h3></td>
+				{% if venuereport %}<td>{{ venuereport.show_name.performance_start }}</td>{% endif %}
+				<td>{% if form %}{% render_field form.performance_start %}{% else %}{{ venuereport.performance_start }}{% endif %}</td>
+				<td rowspan="2">{% if form %}{% render_field form.performance_notes class+="form-control" placeholder+=form.performance_notes.label %}{% else %}{% if not venuereport.performance_notes %}<em>None entered</em>{% else %}{{ venuereport.performance_notes }}{% endif %}{% endif %}</td>
 			</tr>
 			<tr>
-				<td><h5>Performance Notes</h5></td>
-				<td>{% if not venuereport.performance_notes %}<em>None entered</em>{% else %}{{ venuereport.performance_notes }}{% endif %}</td>
-			</tr>
-		</table>
-	</div>
-	<div class="col-md">
-		<h2 class="text-center">Get Out</h2>
-		<table class="table">
-			<tr>
-				<td><h5>Timings</h5></td>
-				<td><strong>Scheduled start time: </strong>{{ venuereport.show_name.slot_end }}<br />
-				<strong>Actual start time: </strong>{{ venuereport.slot_end }}</td>
+				<td><h3>Show End</h3></td>
+				{% if venuereport %}<td>{{ venuereport.show_name.performance_end }}</td>{% endif %}
+				<td>{% if form %}{% render_field form.performance_end %}{% else %}{{ venuereport.performance_end }}{% endif %}</td>
 			</tr>
 			<tr>
-				<td><h5>Notes</h5></td>
-				<td>{% if not venuereport.get_out_notes %}<em>None entered</em>{% else %}{{ venuereport.get_out_notes }}{% endif %}</td>
+				<td><h3>House Clear</h3></td>
+				{% if venuereport %}<td>{{ venuereport.show_name.performance_end|time_diff:"5" }}</td>{% endif %}
+				<td>{% if form %}{% render_field form.house_clear %}{% else %}{{ venuereport.house_clear }}{% endif %}</td>
+				<td rowspan="2">{% if form %}{% render_field form.get_out_notes class+="form-control" placeholder+=form.get_out_notes.label %}{% else %}{% if not venuereport.get_out_notes %}<em>None entered</em>{% else %}{{ venuereport.get_out_notes }}{% endif %}{% endif %}</td>
 			</tr>
-		</table>
-	</div>
-
+			<tr>
+				<td><h3>Get Out Finished</h3></td>
+				{% if venuereport %}<td>{{ venuereport.show_name.slot_end }}</td>{% endif %}
+				<td>{% if form %}{% render_field form.slot_end %}{% else %}{{ venuereport.slot_end }}{% endif %}</td>
+				
+			</tr>
+		</tbody>
+	</table>
 </div>
+<hr>
 <div class="row">
 	<div class="col">
 		<h2>Other Notes</h2>
-		<p>{% if not venuereport.notes %}<em>None entered</em>{% else %}{{ venuereport.notes }}{% endif %}</p>
+		<p>{% if form %}{% render_field form.venue_notes class+="form-control" placeholder+=form.venue_notes.label %}{% else %}{% if not venuereport.notes %}<em>None entered</em>{% else %}{{ venuereport.notes }}{% endif %}{% endif %}</p>
 	</div>
 </div>
+{% if user.is_staff and not form %}
+<div class="row">
+	<div class="col text-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffVenueReportEdit' show.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+</div>
+{% elif form %}
+<button class="btn btn-lg btn-secondary" role="button" type="submit"><i class="fa fa-fw fa-check"></i> Submit</button>
+</form>
+{% endif %}
 {% endblock %}
