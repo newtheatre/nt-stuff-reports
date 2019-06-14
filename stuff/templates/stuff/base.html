@@ -27,8 +27,7 @@
 		<!-- FontAwesome --> 
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-		<!-- TODO StuFF CSS. In the meantime, here's Bootstrap. --> 
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="{% static 'stuff/css/main.css' %}">
 
 		{% if using_time %}
 		<!-- MomentJS -->
@@ -47,7 +46,7 @@
 			<div class="container">
 		  	<div class="col">
 		      <a class="navbar-brand" href="{% url 'stuff:stuffCurrentShows' %}">
-		        <img src="https://newtheatre.org.uk/images/logos/nt_logo-web.png" width=100px />
+		        <img src="{% static 'stuff/stuff-icon.png' %}" width=100px />
 		      </a>
 				  <button class="navbar-toggler float-right" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 				    <span class="navbar-toggler-icon"></span>
@@ -72,25 +71,39 @@
 							<a class="nav-link" href="{% url 'stuff:stuffLogin' %}">Login</a>
 						</li>
 						{% endif %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'stuff:stuffCurrentShows' %}">Upcoming Shows</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'stuff:stuffShowArchive' %}">All Shows</a>
-						</li>
+						<div class="dropdown">
+							<li class="nav-item">
+								<a href="#" class="dropdown-toggle nav-item nav-link" data-toggle="dropdown">Shows <i class="caret"></i></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffCurrentShows' %}">Upcoming</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffShowArchive' %}">All</a>
+									</li>
+								</ul>
+							</li>
+						</div>
 						{% if user.is_staff %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'stuff:stuffRequirementsBlankNew' %}">New Requirements Form</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'stuff:stuffInductionBlankNew' %}">New Induction</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'stuff:stuffFOHReportBlankNew' %}">New FOH Report</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'stuff:stuffVenueReportBlankNew' %}">New Venue Report</a>
-						</li>
+						<div class="dropdown">
+							<li class="nav-item">
+								<a href="#" class="dropdown-toggle nav-item nav-link" data-toggle="dropdown">New... <i class="caret"></i></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffRequirementsBlankNew' %}">Requirements Form</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffInductionBlankNew' %}">Induction</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffFOHReportBlankNew' %}">FOH Report</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffVenueReportBlankNew' %}">Venue Report</a>
+									</li>
+								</ul>
+							</li>
+						</div>
 						{% endif %}
 						<li class="nav-item">
 							<a class="nav-link" href="#">New Log Entry</a>

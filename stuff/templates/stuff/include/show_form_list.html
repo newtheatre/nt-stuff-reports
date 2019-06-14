@@ -1,23 +1,23 @@
 			<div class="row"><div class="col">
 				{% if not show.has_induction %}
 					{% if user.is_staff %}
-						<a class="btn btn-block btn-info h5 py-3 rounded-0 mb-0" href="{% url 'stuff:stuffInductionNew' show.pk %}"><i class="fa fa-plus fa-fw"></i> Fill out the induction form for this show</a>
+						<a class="btn btn-block btn-info h5 pt-2 rounded-0 mb-0" href="{% url 'stuff:stuffInductionNew' show.pk %}"><i class="fa fa-plus fa-fw"></i> Fill out the induction form for this show</a>
 					{% else %}
 						<p class="text-center text-muted my-2"><em><i class="fa fa-info-circle fa-fw"></i> This show has not had its festival induction yet.</em></p>
 					{% endif %}
 				{% else %}
-					<a class="btn btn-block btn-info h5 py-3 rounded-0 mb-0" href="{% url 'stuff:stuffInduction' show.pk %}"><i class="fa fa-info-circle fa-fw"></i> View Show Induction details</a>
+					<a class="btn btn-block btn-info h5 pt-2 rounded-0 mb-0" href="{% url 'stuff:stuffInduction' show.pk %}"><i class="fa fa-info-circle fa-fw"></i> View Show Induction details</a>
 				{% endif %}
 			</div></div>
 			<div class="row"><div class="col">
 				{% if not show.has_requirements %}
 					{% if user.is_staff %}
-						<a class="btn btn-success btn-block h5 py-3 rounded-0 mb-0" href="{% url 'stuff:stuffRequirementsNew' show.pk %}"><i class="fa-fw fa fa-plus"></i> Add Changeover Requirements</a>
+						<a class="btn btn-success btn-block h5 pt-2 rounded-0 mb-0" href="{% url 'stuff:stuffRequirementsNew' show.pk %}"><i class="fa-fw fa fa-plus"></i> Add Changeover Requirements</a>
 					{% else %}
 						<p class="text-center text-muted my-2"><em><i class="fa fa-info-circle fa-fw"></i> There are no changeover plans for this show yet.</em></p>
 					{% endif %}
 				{% else %}
-					<a class="btn btn-success btn-block h5 py-3 rounded-0 mb-0" href="{% url 'stuff:stuffRequirements' show.pk %}">View Changeover Plan</a>
+					<a class="btn btn-success btn-block h5 pt-2 rounded-0 mb-0" href="{% url 'stuff:stuffRequirements' show.pk %}">View Changeover Plan</a>
 				{% endif %}
 			</div></div>
 
@@ -25,30 +25,30 @@
 				{% if not show.has_foh_report %}
 					{% if user.is_staff %}
 						<div class="row">
-							<div class="col"><a class="btn btn-block h5 py-3 rounded-0 mb-0 btn-light" href="{% url 'stuff:stuffFOHReportNew' show.pk %}"><i class="fa-fw fa fa-plus"></i> Create Front of House Report</a></div>
+							<div class="col"><a class="btn btn-block h5 pt-2 rounded-0 mb-0 btn-light" href="{% url 'stuff:stuffFOHReportNew' show.pk %}"><i class="fa-fw fa fa-plus"></i> Create Front of House Report</a></div>
 						</div>
 					{% endif %}
 				{% else %}
 					<div class="row px-2 mt-2">
-						<div class="col py-3">Front of House Report</div>
-						<div class="col text-right"><a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffFOHReport' show.pk %}"><i class="fa fa-fw  fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffFOHReportEdit' show.pk %}"><i class="fa fa-fw  fa-edit"></i></a>{% endif %}</div>
+						<div class="col-auto pt-2">Front of House Report</div>
+						<div class="col text-right float-right"><a class="btn btn-warning h5 pt-2" href="{% url 'stuff:stuffFOHReport' show.pk %}"><i class="fa fa-fw  fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 pt-2" href="{% url 'stuff:stuffFOHReportEdit' show.pk %}"><i class="fa fa-fw  fa-edit"></i></a>{% endif %}</div>
 					</div>
 				{% endif %}
-				
+				<hr class="mt-2">
 				{% if not show.has_venue_report %}
 					{% if user.is_staff %}
 						<div class="row">
-							<div class="col"><a class="btn btn-block h5 py-3 rounded-0 mb-0 btn-light" href="{% url 'stuff:stuffVenueReportNew' show.pk %}"><i class="fa-fw fa fa-plus"></i> Create Venue Report</a></div>
+							<div class="col"><a class="btn btn-block h5 pt-2 rounded-0 mb-0 btn-light" href="{% url 'stuff:stuffVenueReportNew' show.pk %}"><i class="fa-fw fa fa-plus"></i> Create Venue Report</a></div>
 						</div>
 					{% endif %}
 				{% else %}
 				<div class="row px-2 mt-2">
-					<div class="col py-3">Venue Report</div>
-					<div class="col text-right"><a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffVenueReport' show.pk %}"><i class="fa fa-fw  fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 py-3" href="{% url 'stuff:stuffVenueReportEdit' show.pk %}"><i class="fa fa-fw  fa-edit"></i></a>{% endif %}</div>
+					<div class="col-auto pt-2">Venue Report</div>
+					<div class="col text-right float-right"><a class="btn btn-warning h5 pt-2" href="{% url 'stuff:stuffVenueReport' show.pk %}"><i class="fa fa-fw  fa-eye"></i></a>{% if user.is_staff %}&nbsp;<a class="btn btn-warning h5 pt-2" href="{% url 'stuff:stuffVenueReportEdit' show.pk %}"><i class="fa fa-fw  fa-edit"></i></a>{% endif %}</div>
 				</div>
 				{% endif %}
 			{% else %}
 				{% if user.is_staff %}
-					<div class="col mt-2"><p class="text-center text-muted"><em><i class="fa fa-info-circle fa-fw"></i> Front of House and Venue Reports can be added once the show has been set up.</em></p></div>
+					<div class="col mt-2"><p class="text-center text-muted"><em><i class="fa fa-info-circle fa-fw"></i> Front of House and Venue Reports can be added once the show has completed its induction.</em></p></div>
 				{% endif %}
 			{% endif %}	

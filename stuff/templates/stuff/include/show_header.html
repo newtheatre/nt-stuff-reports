@@ -9,9 +9,9 @@
 		</div>
 		{% endif %}
 		<div class="row h5">
-			<div class="col{% if show_list %}-5{% endif %} text-right"><strong>Slot: </strong></div><div class="col">{{ show.slot_start }} - {{ show.slot_end }}</div>
+			<div class="col{% if show_list %}-auto col-md-6{% endif %} text-right"><strong>Slot: </strong></div><div class="col{% if show_list %}-auto col-md{% endif %}">{{ show.slot_start }} - {{ show.slot_end }}</div>
 		</div>
 		<div class="row h5">
-			<div class="col{% if show_list %}-5{% endif %} text-right"><strong>Performance: </strong></div><div class="col">{{ show.performance_start }} - {{ show.performance_end }}</div>
+			<div class="col{% if show_list %}-auto col-md-6{% endif %} text-right"><strong>Performance: </strong></div><div class="col{% if show_list %}-auto col-md{% endif %}">{{ show.performance_start }} - {{ show.performance_end }}</div>
 		</div>
 	</div>

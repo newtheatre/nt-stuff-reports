@@ -1,0 +1,34 @@
+{
+  "name": "nt-stuff-reports",
+  "version": "0.1.0",
+  "description": "Django-based show report system for a theatre festival",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^9.5.1",
+    "bootstrap": "4.3.1",
+    "clean-css-cli": "^4.3.0",
+    "node-sass": "^4.11.0",
+    "postcss-cli": "^6.1.2",
+    "stylelint": "^10.0.1",
+    "stylelint-config-recommended-scss": "^3.3.0",
+    "stylelint-config-standard": "^18.3.0",
+    "stylelint-order": "^3.0.0",
+    "stylelint-scss": "^3.6.0",
+    "watch": "^1.0.2"
+  },
+  "scripts": {
+    "css_compile": "node-sass --output-style nested --precision 6 stuff/static/stuff/scss/main.scss stuff/static/stuff/css/main.css",
+    "css_watch": "watch 'npm run css_compile'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samozzy/nt-stuff-reports.git"
+  },
+  "author": "Sam Osborne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samozzy/nt-stuff-reports/issues"
+  },
+  "homepage": "https://github.com/samozzy/nt-stuff-reports#readme"
+}
