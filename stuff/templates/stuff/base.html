@@ -105,9 +105,21 @@
 							</li>
 						</div>
 						{% endif %}
-						<li class="nav-item">
-							<a class="nav-link" href="#">New Log Entry</a>
-						</li>
+						<div class="dropdown">
+							<li class="nav-item">
+								<a href="#" class="dropdown-toggle nav-item nav-link" data-toggle="dropdown">Festival Log <i class="caret"></i></a>
+								<ul class="dropdown-menu">
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffLogNew' %}">New Log Entry</a>
+									</li>
+									{% if user.is_staff %}
+									<li class="nav-item">
+										<a class="nav-link" href="{% url 'stuff:stuffLogList' %}">View log entries</a>
+									</li>
+									{% endif %}
+								</ul>
+							</li>
+						</div>
 					</ul>
 				</div>
 			</div>

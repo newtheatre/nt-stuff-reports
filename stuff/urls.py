@@ -36,7 +36,12 @@ urlpatterns = [
 	path('induction', views.InductionNewView.as_view(), name='stuffInductionBlankNew'),
 	path('venue', views.VenueReportNewView.as_view(), name='stuffVenueReportBlankNew'),
 	path('foh', views.FOHReportNewView.as_view(), name='stuffFOHReportBlankNew'),
-	
+
+	path('log/', views.LogReportListView.as_view(), name='stuffLogList'),
+	path('log/<int:pk>/', views.LogReportSingleView.as_view(), name='stuffLogSingle'),
+	path('log/<int:pk>/edit', views.LogReportEditView.as_view(), name='stuffLogEdit'),
+	path('log/new/', views.LogReportCreateView.as_view(), name='stuffLogNew'),
+
 	# Festival Reports (TBA)
 	# Daily Reports		 (TBA)
 ]

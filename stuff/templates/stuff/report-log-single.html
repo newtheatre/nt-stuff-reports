@@ -1,0 +1,27 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ logreport }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">{{ logreport }}</h1>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		{% if logreport.subject_name %}<p><strong>Concerning: {{ logreport.subject_name }}</strong></p>{% endif %}
+		<p>{{ logreport.report_text }}</p>
+		<hr>
+		<p class="text-muted text-center">Submitted on {{ logreport.report_date }}</p>
+	</div>
+</div>
+{% if user.is_staff %}
+<!-- or if user == author -->
+<div class="row">
+	<div class="col text-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffLogEdit' logreport.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

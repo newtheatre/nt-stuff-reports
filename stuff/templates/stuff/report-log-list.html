@@ -1,0 +1,25 @@
+{% extends 'stuff/base.html' %}
+{% block title %}Log Entries{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">Log Entries</h1>
+	</div>
+	<div class="col-2">
+		<a class="btn btn-info" href="{% url 'stuff:stuffLogNew' %}"><i class="fa fa-plus"></i> New Entry</a>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		<dl>
+			{% for log in logreport %}
+				<dt><a href="{% url 'stuff:stuffLogSingle' log.pk %}">{{ log }}</a></dt>
+				{% if log.subject %}<dd>Concerning {{ log.subject }}</dd>{% endif %}
+				<dd>Submitted on {{ log.report_date }}</dd>
+			{% endfor %}
+		</dl>
+	</div>
+</div>
+{% endblock %}

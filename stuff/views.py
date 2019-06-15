@@ -294,6 +294,63 @@ class FOHReportEditView(SuccessMessageMixin, UpdateView):
 	def get_success_url(self):
 		return reverse_lazy('stuff:stuffFOHReport', kwargs={'pk': self.kwargs.get(self.pk_url_kwarg) })
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
+class LogReportListView(generic.ListView):
+	model = LogReport 
+	template_name = 'stuff/report-log-list.html'
+	context_object_name = 'logreport'
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
+class LogReportSingleView(generic.DetailView):
+	model = LogReport
+	template_name = 'stuff/report-log-single.html'
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
+class LogReportEditView(SuccessMessageMixin, UpdateView):
+	form_class = LogReportForm 
+	template_name = 'stuff/forms.html'
+	success_message = 'Log entry edited successfully'
+
+	def get_context_data(self, **kwargs):
+			context = super(LogReportEditView, self).get_context_data(**kwargs)
+			context['report_title'] = 'Edit Log Entry ' + str(super(LogReportEditView, self))
+			context['page_title'] = 'Edit Log Entry'
+			return context
+
+	def get_object(self):
+		return get_object_or_404(LogReport, pk=self.kwargs.get(self.pk_url_kwarg))
+
+	def get_success_url(self):
+		return reverse_lazy('stuff:stuffLogSingle', kwargs={'pk': self.kwargs.get(self.pk_url_kwarg) })
+
+@method_decorator(login_required, name='dispatch')
+class LogReportCreateView(SuccessMessageMixin, CreateView):
+	form_class = LogReportForm 
+	template_name = 'stuff/forms.html'
+	success_message = 'Festival log entry added. If it requires urgent attention, please contact a member of the management team.'
+
+	def get_context_data(self, **kwargs):
+			context = super(LogReportCreateView, self).get_context_data(**kwargs)
+			context['page_title'] = 'New Log Entry'
+			context['report_title'] = context['page_title']
+			return context
+
+	def get_success_url(self):
+		return reverse_lazy('stuff:stuffCurrentShows')
+
+	def get_initial(self):
+		initial = super().get_initial()
+
+		if self.request.user.first_name or self.request.user.last_name:
+			user_string = str(self.request.user.first_name) + ' ' + str(self.request.user.last_name)
+		else:
+			user_string = str(self.request.user)
+		initial['author_name'] = user_string
+		return initial
+
 # Authentication Views
 
 class stuffLoginView(auth_views.LoginView):

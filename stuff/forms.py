@@ -49,3 +49,9 @@ class FOHReportForm(forms.ModelForm):
 		model = FOHReport 
 		fields = '__all__'
 		exclude = { 'timestamp '}
+
+class LogReportForm(forms.ModelForm):
+	class Meta:
+		model = LogReport  
+		fields = '__all__'
+		exclude = { 'report_date' }

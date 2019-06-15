@@ -294,15 +294,47 @@ class DayReport(models.Model):
 	)
 
 class LogReport(models.Model):
+	class Meta:
+		ordering = ['-report_date']
+
 	report_type = models.CharField(
 		max_length = 50,
 		choices = (
 			('A', 'Accident'),
 			('I', 'Incident'),
-			('C', 'Complaint')
+			('C', 'Complaint'),
+			('N', 'Note'),
 		)
 	)
-	author_name = models.CharField(max_length=100)
-	subject_name = models.CharField(max_length=100)
-	report_text = models.TextField()
-	report_date = models.DateTimeField()
+	show_name = models.ForeignKey(
+		Show, default=None, null=True, blank=True, on_delete=models.CASCADE,
+		help_text = "If this log entry is to do with a show, select which one.")
+	company_name = models.ForeignKey(
+		Company, default=None, null=True, blank=True, on_delete=models.CASCADE,
+		help_text = "If this log entry is to do with a company, select which one.")
+	author_name = models.CharField(
+		max_length=100,
+	)
+	subject_name = models.CharField(
+		max_length=100,
+		help_text = "Who, if anyone, is this report about?",
+		blank=True,
+	)
+	report_text = models.TextField(
+		help_text = "Festival log entries are only visible to the management team, and will be kept confidential where necessary. Please provide as much detail as possible."
+	)
+	report_date = models.DateTimeField(default=datetime.datetime.now())
+
+	def __str__(self):
+		display_string = str(self.get_report_type_display()) + ' report'
+		if self.show_name is not None or self.company_name is not None:
+			display_string = display_string + ' about '
+			if self.show_name is not None:
+				display_string = display_string + str(self.show_name)
+			if self.show_name is not None and self.company_name is not None:
+				display_string = display_string + ' and '
+			if self.company_name is not None:
+				display_string = display_string + str(self.company_name)
+		display_string = display_string + ' by ' + str(self.author_name)
+
+		return display_string
