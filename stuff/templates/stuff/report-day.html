@@ -1,0 +1,46 @@
+{% extends 'stuff/base.html' %}
+{% block title %}{{ dayreport }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">{{ dayreport }}</h1>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-sm">
+		<dl>
+			<dt>Auditorium Bar Sales</dt>
+			<dl>{% if dayreport.auditorium_bar_sales is not None %}£{{ dayreport.auditorium_bar_sales }}{% else %}<em>None entered</em>{% endif %}</dl>
+			<dt>Studio Bar Sales</dt>
+			<dl>{% if dayreport.studio_bar_sales is not None %}£{{ dayreport.studio_bar_sales }}{% else %}<em>None entered</em>{% endif %}</dl>
+		</dl>
+	</div>
+	<div class="col-sm">
+		<strong>Vendor Notes:</strong>
+		<p>{% if dayreport.vendor_notes %}{{ dayreport.vendor_notes }}{% else %}<em>No data</em>{% endif %}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<p><strong>Weather: </strong>{% if dayreport.weather %}{{ dayreport.weather }}{% else %}<em>No data</em>{% endif %}</p>
+		<p><strong>Overall Atmosphere: </strong>{% if dayreport.overall_atmosphere %}{{ dayreport.overall_atmosphere }}{% else %}<em>No data</em>{% endif %}</p>
+		<p><strong>Approx footfall: </strong>{% if dayreport.approx_footfall is not None %}{{ dayreport.approx_footfall }}{% else %}<em>No data</em>{% endif %}</p>
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<h4>Other Notes</h4>
+		<p>{% if dayreport.notes %}{{ dayreport.notes }}{% else %}<em>No data</em>{% endif %}</p>
+	</div>
+</div>
+{% if user.is_staff %}
+<!-- or if user == author -->
+<div class="row">
+	<div class="col text-right">
+		<a class="btn btn-lg btn-warning" href="{% url 'stuff:stuffDayReportEdit' dayreport.pk %}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

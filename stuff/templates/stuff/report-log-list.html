@@ -13,6 +13,7 @@
 <hr>
 <div class="row">
 	<div class="col">
+		{% if logreport %}
 		<dl>
 			{% for log in logreport %}
 				<dt><a href="{% url 'stuff:stuffLogSingle' log.pk %}">{{ log }}</a></dt>
@@ -20,6 +21,9 @@
 				<dd>Submitted on {{ log.report_date }}</dd>
 			{% endfor %}
 		</dl>
+		{% else %}
+			<p class="text-center text-muted"><i class="fa fa-info-circle"></i> There are no entries in the log yet.</i></p>
+		{% endif %}
 	</div>
 </div>
 {% endblock %}

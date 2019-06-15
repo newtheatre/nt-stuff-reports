@@ -273,11 +273,14 @@ class FOHReport(models.Model):
 		return display_string
 
 class DayReport(models.Model):
+	class Meta:
+		ordering = ['-date']
+		
 	date = models.DateField(
-		unique=True
+		unique=True, 
 	)
-	auditorium_bar_sales = models.IntegerField(blank=True)
-	studio_bar_sales = models.IntegerField(blank=True)
+	auditorium_bar_sales = models.IntegerField(blank=True, null=True)
+	studio_bar_sales = models.IntegerField(blank=True, null=True)
 	vendor_notes = models.TextField(
 		blank=True,
 		help_text = "Include each vendor, their day's takings, and any other notes"
@@ -287,11 +290,15 @@ class DayReport(models.Model):
 		max_length = 200,
 	)
 	overall_atmosphere = models.TextField(blank=True)
-	approx_footfall = models.IntegerField(blank=True)
+	approx_footfall = models.IntegerField(blank=True, null=True)
 	notes = models.TextField(
 		blank=True,
 		help_text = "Any other points worth noting from the day."
 	)
+
+	def __str__(self):
+		display_string = 'Day report for ' + str(self.date)
+		return display_string
 
 class LogReport(models.Model):
 	class Meta:
@@ -323,7 +330,7 @@ class LogReport(models.Model):
 	report_text = models.TextField(
 		help_text = "Festival log entries are only visible to the management team, and will be kept confidential where necessary. Please provide as much detail as possible."
 	)
-	report_date = models.DateTimeField(default=datetime.datetime.now())
+	report_date = models.DateTimeField()
 
 	def __str__(self):
 		display_string = str(self.get_report_type_display()) + ' report'

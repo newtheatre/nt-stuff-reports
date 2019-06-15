@@ -1,0 +1,29 @@
+{% extends 'stuff/base.html' %}
+{% block title %}Daily Reports{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-8 offset-2">
+		<h1 class="text-center">Daily Reports</h1>
+	</div>
+	{% if user.is_staff %}
+	<div class="col-2">
+		<a class="btn btn-info" href="{% url 'stuff:stuffLogNew' %}"><i class="fa fa-plus"></i> New Entry</a>
+	</div>
+	{% endif %}
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		{% if dayreport %}
+		<dl>
+			{% for report in dayreport %}
+				<dt><a href="{% url 'stuff:stuffDayReport' report.pk %}">{{ report }}</a></dt>
+			{% endfor %}
+		</dl>
+		{% else %}
+			<p class="text-center text-muted"><i class="fa fa-info-circle"></i> There are no day reports yet.</i></p>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

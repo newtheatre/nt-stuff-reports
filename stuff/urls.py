@@ -42,7 +42,11 @@ urlpatterns = [
 	path('log/<int:pk>/edit', views.LogReportEditView.as_view(), name='stuffLogEdit'),
 	path('log/new/', views.LogReportCreateView.as_view(), name='stuffLogNew'),
 
+	path('log/day/', views.DayReportListView.as_view(), name='stuffDayReportList'),
+	path('log/day/<int:pk>', views.DayReportView.as_view(), name='stuffDayReport'),
+	path('log/day/<int:pk>/edit', views.DayReportEditView.as_view(), name='stuffDayReportEdit'),
+	path('log/day/new', views.DayReportCreateView.as_view(), name='stuffDayReportNew'),
+
 	# Festival Reports (TBA)
-	# Daily Reports		 (TBA)
 ]
 handler404 = views.PageNotFoundView.as_view()

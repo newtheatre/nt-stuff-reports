@@ -55,3 +55,9 @@ class LogReportForm(forms.ModelForm):
 		model = LogReport  
 		fields = '__all__'
 		exclude = { 'report_date' }
+
+class DayReportForm(forms.ModelForm):
+	class Meta:
+		model = DayReport 
+		fields = '__all__'
+		

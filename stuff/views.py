@@ -316,7 +316,7 @@ class LogReportEditView(SuccessMessageMixin, UpdateView):
 
 	def get_context_data(self, **kwargs):
 			context = super(LogReportEditView, self).get_context_data(**kwargs)
-			context['report_title'] = 'Edit Log Entry ' + str(super(LogReportEditView, self))
+			context['report_title'] = 'Edit Log Entry ' + str(self.object)
 			context['page_title'] = 'Edit Log Entry'
 			return context
 
@@ -350,6 +350,52 @@ class LogReportCreateView(SuccessMessageMixin, CreateView):
 			user_string = str(self.request.user)
 		initial['author_name'] = user_string
 		return initial
+
+@method_decorator(login_required, name='dispatch')
+class DayReportView(generic.DetailView):
+	model = DayReport 
+	template_name = 'stuff/report-day.html'
+
+@method_decorator(login_required, name='dispatch')
+class DayReportListView(generic.ListView):
+	model = DayReport
+	template_name = 'stuff/report-day-list.html'
+	context_object_name = 'dayreport'
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
+class DayReportCreateView(SuccessMessageMixin, CreateView):
+	form_class = DayReportForm
+	template_name = 'stuff/forms.html'
+	success_message = 'Day report added'
+
+	def get_context_data(self, **kwargs):
+			context = super(DayReportCreateView, self).get_context_data(**kwargs)
+			context['page_title'] = 'New Day Report'
+			context['report_title'] = context['page_title']
+			return context
+
+	def get_success_url(self):
+		return reverse_lazy('stuff:stuffDayReport', kwargs={'pk': self.object.pk })
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
+class DayReportEditView(SuccessMessageMixin, UpdateView):
+	form_class = DayReportForm
+	template_name = 'stuff/forms.html'
+	success_message = 'Day report updated'
+
+	def get_context_data(self, **kwargs):
+			context = super(DayReportEditView, self).get_context_data(**kwargs)
+			context['page_title'] = 'Edit Day Report'
+			context['report_title'] = 'Edit Day Report ' + str(self.object)
+			return context
+
+	def get_object(self):
+		return get_object_or_404(DayReport, pk=self.kwargs.get(self.pk_url_kwarg))
+
+	def get_success_url(self):
+		return reverse_lazy('stuff:stuffDayReport', kwargs={'pk': self.object.pk })
 
 # Authentication Views
 
