@@ -150,10 +150,12 @@ class Requirement(models.Model):
 		max_length=250,
 		default='None',
 	)
+	microphones = models.IntegerField(default=0, help_text="How many microphones are being used?")
 	video = models.CharField(
 		max_length=250,
 		default = 'None',
 	)
+	projector_screen = models.BooleanField(default=False, help_text="Does this show require a projector screen?")
 	tech_notes = models.TextField(blank=True)
 
 	def __str__(self):
@@ -275,7 +277,7 @@ class FOHReport(models.Model):
 class DayReport(models.Model):
 	class Meta:
 		ordering = ['-date']
-		
+
 	date = models.DateField(
 		unique=True, 
 	)

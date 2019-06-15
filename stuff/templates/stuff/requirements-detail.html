@@ -55,16 +55,18 @@
 	<div class="col"><h2>Technical</h2>
 		<table class="table">
 			<tr>
-				<td><strong>Lighting:</strong> {{ requirement.lighting }}</td>
+				<td colspan="2"><strong>Lighting:</strong> {{ requirement.lighting }}</td>
 			</tr>
 			<tr>
 				<td><strong>Sound:</strong> {{ requirement.sound }}</td>
+				<td><strong>Microphones:</strong> {{ requirement.microphones }}</td>
 			</tr>
 			<tr>
 				<td><strong>Video:</strong> {{ requirement.video }}</td>
+				<td><strong>Projector screen:</strong> {{ requirement.fire_alarm_disabled|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}</td>
 			</tr>
 			<tr>
-				<td><strong>Notes:</strong> {% if not requirement.tech_notes %}<em>None</em>{% else %}{{ requirement.tech_notes }}{% endif %}</td>
+				<td colspan="2"><strong>Notes:</strong> {% if not requirement.tech_notes %}<em>None</em>{% else %}{{ requirement.tech_notes }}{% endif %}</td>
 			</tr>
 		</table>
 	</div>

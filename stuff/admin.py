@@ -52,8 +52,8 @@ class RequirementAdmin(admin.ModelAdmin):
 		('Technical', {
 			'fields': (
 				'lighting',
-				'sound',
-				'video',
+				('sound', 'microphones'),
+				('video', 'projector_screen'),
 				'tech_notes'
 			),
 		}),
