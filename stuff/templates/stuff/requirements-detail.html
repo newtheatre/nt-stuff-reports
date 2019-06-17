@@ -63,7 +63,7 @@
 			</tr>
 			<tr>
 				<td><strong>Video:</strong> {{ requirement.video }}</td>
-				<td><strong>Projector screen:</strong> {{ requirement.fire_alarm_disabled|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}</td>
+				<td><strong>Projector screen:</strong> {{ requirement.projector_screen|yesno:"Yes <i class='fa fa-check-circle text-success'></i>,No <i class='fa fa-times-circle text-danger'></i>"|safe }}</td>
 			</tr>
 			<tr>
 				<td colspan="2"><strong>Notes:</strong> {% if not requirement.tech_notes %}<em>None</em>{% else %}{{ requirement.tech_notes }}{% endif %}</td>
